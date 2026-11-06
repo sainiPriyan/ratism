@@ -1,0 +1,2 @@
+import { PlaceholderPage } from '@/app/routes'
+export default function About() { return <PlaceholderPage label="A NOTE FROM THE WALLS" title={<>WHO IS<br /><em>RATISM?</em></>} intro="Ratism is an independent creative corner of the internet. A place for tiny games, odd ideas, memes, experiments and all the things that deserve a little more room to be strange." symbol="◒" links={[{label:'Explore the burrow', href:'/'},{label:'Read the journal', href:'/journal'}]} /> }

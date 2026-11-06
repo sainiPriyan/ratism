@@ -1,0 +1,2 @@
+import { PlaceholderPage } from '@/app/routes'
+export default function Experiments() { return <PlaceholderPage label="THE LABORATORY" title={<>UNNECESSARY<br /><em>PROJECTS.</em></>} intro="Interesting results, dubious methods. This is where we put the ideas that would not behave anywhere else." symbol="⌁" links={[{label:'Return to the burrow', href:'/'},{label:'Meet the rats', href:'/about'}]} /> }

@@ -1,0 +1,2 @@
+import { PlaceholderPage } from '@/app/routes'
+export default function Games() { return <PlaceholderPage label="THE PLAYGROUND" title={<>GAMES<br /><em>INCOMING.</em></>} intro="Small games. Questionable amounts of effort. The arcade is under construction, but the tokens are real." symbol="✣" links={[{label:'Return to the burrow', href:'/'},{label:'Try the experiments', href:'/experiments'}]} /> }

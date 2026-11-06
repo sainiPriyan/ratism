@@ -1,0 +1,2 @@
+import { PlaceholderPage } from '@/app/routes'
+export default function Journal() { return <PlaceholderPage label="RECENT TRANSMISSIONS" title={<>FRESH FROM<br /><em>THE BURROW.</em></>} intro="Thoughts, stories and things worth writing down. More field notes are currently being smuggled through the walls." symbol="▤" links={[{label:'Return to the burrow', href:'/'},{label:'See the archive', href:'/memes'}]} /> }
