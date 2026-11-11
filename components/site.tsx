@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { ArrowUpRight, Menu, X, Circle } from 'lucide-react'
 import { articles, jokes, memes } from '@/data/content'
@@ -13,11 +14,15 @@ const nav = [
 ]
 
 export function Logo() {
-  return (
+return (
     <Link href="/" className="logo" aria-label="Ratism home">
-      <span className="rat-mark" aria-hidden="true">
-        ⌁
-      </span>
+      <Image
+        src="/ratism-logo.png"
+        alt="Ratism"
+        width={42}
+        height={42}
+        className="logo-image"
+      />
       <span>RATISM</span>
     </Link>
   )
