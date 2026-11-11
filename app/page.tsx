@@ -1,5 +1,90 @@
 import Link from 'next/link'
 import { ArrowDown, ArrowUpRight } from 'lucide-react'
-import { ExploreSection, JournalPreview, MemeArchive, PageFrame, RatInteraction, SectionLabel, DailyNonsense, RatSvg } from '@/components/site'
+import {
+  ExploreSection,
+  JournalPreview,
+  MemeArchive,
+  PageFrame,
+  RatInteraction,
+  SectionLabel,
+  DailyNonsense,
+  RatSvg,
+} from '@/components/site'
 
-export default function Home() { return <PageFrame><section className="hero section"><div className="hero-copy"><SectionLabel>AN INDEPENDENT CORNER OF THE INTERNET</SectionLabel><h1>Welcome to the<br /><em>Rat Side</em> of the Internet.</h1><p className="hero-lede">Less noise. More nonsense.<br />A little bit of everything.</p><p className="hero-description">Ratism is a growing collection of games, ideas, memes, experiments and other things we probably spent too much time making.</p><div className="hero-actions"><Link href="#explore" className="button button-primary">EXPLORE THE BURROW <ArrowUpRight /></Link><Link href="#archive" className="button button-ghost">SEE WHAT&apos;S INSIDE <ArrowDown /></Link></div></div><div className="hero-art"><div className="hero-stamp">RATISM<br /><span>EST. 2026</span></div><RatSvg /><div className="hero-note"><span>POPULATION: UNKNOWN</span><span>STATUS: QUESTIONABLE</span></div></div></section><div className="ticker"><span>✳ RATISM IS A PLACE FOR THINGS</span><span>✳ THE RATS ARE ONLINE</span><span>✳ NO PARTICULAR REASON</span><span>✳ RATISM IS A PLACE FOR THINGS</span></div><section id="explore"><ExploreSection /></section><RatInteraction /><section id="archive"><MemeArchive /></section><DailyNonsense /><JournalPreview /></PageFrame> }
+export default function Home() {
+  return (
+    <PageFrame>
+      <section className="hero section">
+        <div className="hero-copy">
+          <SectionLabel>
+            AN INDEPENDENT CORNER OF THE INTERNET
+          </SectionLabel>
+
+          <h1>
+            Welcome to the
+            <br />
+            <em>Rat Side</em> of the Internet.
+          </h1>
+
+          <p className="hero-lede">
+            Less noise. More nonsense.
+            <br />
+            A little bit of everything.
+          </p>
+
+          <p className="hero-description">
+            Ratism is a growing cult of games, ideas, memes,
+            experiments and other things we probably spent too much
+            time making.
+          </p>
+
+          <div className="hero-actions">
+            <Link href="#explore" className="button button-primary">
+              EXPLORE THE BURROW <ArrowUpRight />
+            </Link>
+
+            <Link href="#archive" className="button button-ghost">
+              SEE WHAT&apos;S INSIDE <ArrowDown />
+            </Link>
+          </div>
+        </div>
+
+        <div className="hero-art">
+          <div className="hero-stamp">
+            RATISM
+            <br />
+            <span>EST. 2026</span>
+          </div>
+
+          <RatSvg />
+
+          <div className="hero-note">
+            <span>POPULATION: UNKNOWN</span>
+            <span>STATUS: QUESTIONABLE</span>
+          </div>
+        </div>
+      </section>
+
+      <div className="ticker">
+        <span>✳ RATISM IS A PLACE FOR THINGS</span>
+        <span>✳ THE RATS ARE ONLINE</span>
+        <span>✳ NO PARTICULAR REASON</span>
+        <span>✳ RATISM IS A PLACE FOR THINGS</span>
+      </div>
+
+      <section id="explore">
+        <ExploreSection />
+      </section>
+
+      <RatInteraction />
+
+      <section id="archive">
+        <MemeArchive />
+      </section>
+
+      <DailyNonsense />
+
+      <JournalPreview />
+    </PageFrame>
+  )
+}
