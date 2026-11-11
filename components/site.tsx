@@ -111,12 +111,17 @@ export function SectionLabel({
 }) {
   return (
     <div className="section-label">
-      <span>✳</span>
+      <Image
+        src="/section-icon.png"
+        alt=""
+        width={18}
+        height={18}
+        className="section-icon"
+      />
       {children}
     </div>
   )
 }
-
 export function RatSvg({
   fed = false,
   petted = false,
