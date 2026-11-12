@@ -92,7 +92,7 @@ export function Footer() {
         </div>
 
         <div className="footer-rat" aria-hidden="true">
-          ◒
+          🧀
         </div>
       </div>
 

@@ -1116,3 +1116,164 @@ h2 em {
     transition: none !important;
   }
 }
+
+/* =========================================
+   ABOUT PAGE — RATISM
+========================================= */
+
+.about-section {
+  padding-top: 100px;
+  padding-bottom: 120px;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 75px;
+  align-items: start;
+  margin-top: 45px;
+}
+
+/* MANIFESTO */
+
+.about-content {
+  min-width: 0;
+}
+
+.about-content h1 {
+  font-size: clamp(56px, 6vw, 88px);
+  line-height: 0.88;
+  font-weight: 900;
+  letter-spacing: -4px;
+  color: var(--foreground);
+  margin: 0 0 38px;
+}
+
+.about-content h1 em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.about-copy {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.9;
+  max-width: 650px;
+}
+
+.about-copy p {
+  margin-bottom: 22px;
+}
+
+/* RAT IMAGE */
+
+.about-image {
+  position: sticky;
+  top: 110px;
+  min-width: 0;
+}
+
+.about-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  filter: saturate(0.85);
+  transition: filter 0.3s ease;
+}
+
+.about-image img:hover {
+  filter: saturate(1);
+}
+
+.about-image-caption {
+  display: block;
+  margin-top: 14px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  font-family: monospace;
+}
+
+/* NAVIGATION BOX */
+
+.about-links {
+  margin-top: 40px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.about-links > span {
+  display: block;
+  margin-bottom: 22px;
+  font-size: 10px;
+  line-height: 1.7;
+  letter-spacing: 1.2px;
+  color: var(--accent);
+  font-family: monospace;
+}
+
+.about-links > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 25px;
+}
+
+.about-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--foreground);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.about-links a:hover {
+  color: var(--accent);
+}
+
+.about-links svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .about-section {
+    padding-top: 65px;
+    padding-bottom: 80px;
+  }
+
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 35px;
+    margin-top: 30px;
+  }
+
+  .about-image {
+    position: relative;
+    top: auto;
+    grid-row: 1;
+  }
+
+  .about-content {
+    grid-row: 2;
+  }
+
+  .about-content h1 {
+    font-size: clamp(48px, 12vw, 72px);
+    letter-spacing: -2px;
+  }
+
+  .about-copy {
+    font-size: 14px;
+  }
+
+  .about-links {
+    padding: 18px;
+  }
+}
