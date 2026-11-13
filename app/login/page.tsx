@@ -31,7 +31,7 @@ function LoginForm() {
 
       if (loginError) throw loginError
 
-      router.replace('/dashboard')
+      router.replace('/')
       router.refresh()
     } catch (err) {
       setError(

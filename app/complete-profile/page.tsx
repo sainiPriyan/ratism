@@ -31,7 +31,7 @@ export default function CompleteProfilePage() {
         .maybeSingle()
 
       if (profile?.username) {
-        router.replace('/dashboard')
+        router.replace('/')
         return
       }
 
@@ -86,7 +86,7 @@ export default function CompleteProfilePage() {
 
       if (insertError) throw insertError
 
-      router.replace('/dashboard')
+      router.replace('/')
       router.refresh()
     } catch (err) {
       setError(

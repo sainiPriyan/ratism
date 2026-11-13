@@ -2,9 +2,10 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
-import { ArrowUpRight, Menu, X, Circle } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowUpRight, Menu, X, UserRound } from 'lucide-react'
 import { articles, jokes, memes } from '@/data/content'
+import { createClient } from '@/lib/supabase/client'
 
 const nav = [
   ['Games', '/games'],
@@ -28,8 +29,51 @@ return (
   )
 }
 
+
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+
+  const [supabase] = useState(() => createClient())
+
+  useEffect(() => {
+    let active = true
+
+    async function updateAuth(userId: string | null) {
+      if (!active) return
+
+      setLoggedIn(!!userId)
+      setAvatarUrl(null)
+
+      if (!userId) return
+
+      const { data } = await supabase
+        .from('profiles')
+        .select('avatar_url')
+        .eq('id', userId)
+        .maybeSingle()
+
+      if (active && data?.avatar_url) {
+        setAvatarUrl(data.avatar_url)
+      }
+    }
+
+    supabase.auth.getUser().then(({ data }) => {
+      updateAuth(data.user?.id ?? null)
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      updateAuth(session?.user?.id ?? null)
+    })
+
+    return () => {
+      active = false
+      subscription.unsubscribe()
+    }
+  }, [supabase])
 
   return (
     <header className="nav-shell">
@@ -55,14 +99,55 @@ export function Navbar() {
           </Link>
         </nav>
 
-        <div className="nav-status">
-          <Circle size={8} fill="currentColor" />
-          THE RATS ARE ONLINE
+        <div className="nav-auth flex items-center gap-3">
+          {loggedIn ? (
+            <Link
+              href="/profile"
+              aria-label="Your profile"
+              title="Your profile"
+              className="flex items-center justify-center w-10 h-10 rounded-full border border-[var(--border)] hover:border-[var(--accent)] transition-colors overflow-hidden"
+              onClick={() => setOpen(false)}
+            >
+              {avatarUrl ? (
+                <Image
+                  src={avatarUrl}
+                  alt="Profile"
+                  width={40}
+                  height={40}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <UserRound
+                  size={19}
+                  className="text-[var(--accent)]"
+                />
+              )}
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-xs font-semibold tracking-wider text-[var(--muted)] hover:text-white transition-colors"
+                onClick={() => setOpen(false)}
+              >
+                LOG IN
+              </Link>
+
+              <Link
+                href="/signup"
+                className="text-xs font-bold tracking-wider px-4 py-3 bg-[var(--accent)] text-black hover:opacity-85 transition-opacity"
+                onClick={() => setOpen(false)}
+              >
+                SIGN UP
+              </Link>
+            </>
+          )}
         </div>
 
         <button
           className="menu-button"
           aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
           onClick={() => setOpen(!open)}
         >
           {open ? <X /> : <Menu />}
@@ -71,6 +156,7 @@ export function Navbar() {
     </header>
   )
 }
+
 
 export function Footer() {
   return (
