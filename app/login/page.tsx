@@ -16,6 +16,7 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   async function handleLogin(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -69,59 +70,69 @@ function LoginForm() {
 }
 
   return (
-    <main className="min-h-[75vh] flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md">
-        <p className="text-xs tracking-[0.2em] text-[var(--accent)] mb-4">
-          WELCOME BACK
-        </p>
+    <main className="auth-page">
+      <div className="auth-layout">
+        <aside className="auth-aside" aria-label="About Ratism">
+          <p className="auth-index">RATISM / 02</p>
+          <h2>Pick up where <em>you left off.</em></h2>
+          <p className="auth-aside-copy">Your little corner of the burrow is right where you left it.</p>
+          <p className="auth-aside-note">WELCOME BACK, CURIOUS ONE</p>
+        </aside>
+        <section className="auth-panel">
+        <p className="auth-eyebrow">ACCOUNT / 02</p>
+        <h1 className="auth-panel-title">WELCOME BACK.</h1>
 
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">
-          LOG IN.
-        </h1>
-
-        <p className="text-sm text-[var(--muted)] mb-10">
-          Your corner of the burrow awaits.
+        <p className="auth-panel-copy">
+          Your corner of the burrow is right where you left it.
         </p>
 
         {searchParams.get('error') === 'verification_failed' && (
-          <p className="text-sm text-red-500 mb-5" role="alert">
+            <p className="auth-feedback mb-5" role="alert" aria-live="polite">
             Your verification link is invalid or expired. Please try signing up again or request a new confirmation email.
           </p>
         )}
 
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+        <form onSubmit={handleLogin} className="auth-form">
+          <div className="auth-field">
+            <label htmlFor="login-email" className="block text-xs mb-2 text-[var(--muted)]">
               EMAIL ADDRESS
             </label>
             <input
+              id="login-email"
               required
               type="email"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
+                className="auth-input"
             />
           </div>
 
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+          <div className="auth-field">
+            <label htmlFor="login-password" className="block text-xs mb-2 text-[var(--muted)]">
               PASSWORD
             </label>
-            <input
-              required
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Your password"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
-            />
+            <div className="auth-password-wrap">
+              <input
+                id="login-password"
+                required
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Your password"
+                aria-label="Password"
+              className="auth-input"
+              />
+              <button type="button" className="auth-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
+                {showPassword ? 'HIDE' : 'SHOW'}
+              </button>
+            </div>
           </div>
 
           {error && (
-            <p className="text-sm text-red-500" role="alert">
+            <p className="auth-feedback" role="alert" aria-live="polite">
               {error}
             </p>
           )}
@@ -129,7 +140,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[var(--accent)] text-black font-semibold text-sm py-3 hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="auth-button"
           >
             {loading ? 'LOGGING IN...' : 'LOG IN'}
           </button>
@@ -139,36 +150,26 @@ function LoginForm() {
         <div className="flex justify-between gap-4 text-sm mt-8">
           <Link
             href="/forgot-password"
-            className="text-[var(--muted)] hover:text-[var(--accent)]"
+            className="auth-text-link"
           >
             Forgot password?
           </Link>
 
           <Link
             href="/signup"
-            className="text-[var(--accent)] hover:underline"
+            className="auth-text-link"
           >
             Create account
           </Link>
         </div>
 
-       <div className="relative my-7">
-  <div className="absolute inset-0 flex items-center">
-    <div className="w-full border-t border-[var(--border)]" />
-  </div>
-
-    <div className="relative flex justify-center text-xs">
-        <span className="bg-[var(--background)] px-3 text-[var(--muted)]">
-        OR
-        </span>
-    </div>
-    </div>
+        <div className="auth-divider" aria-hidden="true">OR</div>
 
     <button
     type="button"
     onClick={handleGoogleLogin}
     disabled={loading}
-    className="w-full border border-[var(--border)] py-3 text-sm font-semibold hover:border-[var(--accent)] transition-colors disabled:opacity-50 flex items-center justify-center gap-3"
+    className="auth-button auth-button-secondary"
     >
     <svg viewBox="0 0 48 48" className="w-5 h-5" aria-hidden="true">
         <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/>
@@ -180,6 +181,7 @@ function LoginForm() {
     CONTINUE WITH GOOGLE
     </button>   
 
+        </section>
       </div>
     </main>
   )

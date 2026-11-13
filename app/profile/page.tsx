@@ -203,7 +203,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="section min-h-[75vh]">
+    <main className="section min-h-[75vh] profile-page">
       <div className="max-w-4xl mx-auto">
 
         <Link
@@ -214,9 +214,9 @@ export default function ProfilePage() {
           BACK TO RATISM
         </Link>
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-12">
+        <div className="profile-identity mb-8">
 
-          <div className="w-24 h-24 rounded-full border border-[var(--border)] overflow-hidden flex items-center justify-center bg-[var(--surface)] shrink-0">
+          <div className="profile-avatar">
             {profile.avatar_url ? (
               <Image
                 src={profile.avatar_url}
@@ -243,30 +243,28 @@ export default function ProfilePage() {
               {profile.full_name || profile.username}
             </h1>
 
-            <p className="text-sm text-[var(--muted)] mt-2">
-              @{profile.username}
-            </p>
+            <p className="profile-handle">@{profile.username}</p>
+            <p className="profile-handle">{email}</p>
           </div>
 
           <button
             type="button"
             onClick={handleSignOut}
             disabled={signingOut}
-            className="inline-flex items-center justify-center gap-2 border border-[var(--border)] px-5 py-3 text-xs font-semibold tracking-wider hover:border-red-500 hover:text-red-400 transition-colors disabled:opacity-50"
+            className="profile-button profile-button-danger inline-flex items-center gap-2 disabled:opacity-50"
           >
             <LogOut size={15} />
             {signingOut ? 'SIGNING OUT...' : 'SIGN OUT'}
           </button>
         </div>
 
-        <div className="border-t border-[var(--border)] pt-8">
-
+        <section className="profile-section">
           <div className="flex items-center justify-between gap-4 mb-8">
             <div>
               <h2 className="text-xl font-bold">
                 PROFILE DETAILS
               </h2>
-              <p className="text-xs text-[var(--muted)] mt-2">
+              <p className="profile-section-copy">
                 Manage your identity in the Ratism community.
               </p>
             </div>
@@ -289,14 +287,14 @@ export default function ProfilePage() {
           {error && (
             <p
               role="alert"
-              className="text-sm text-red-500 mb-6"
+              className="auth-feedback mb-6"
             >
               {error}
             </p>
           )}
 
           {message && (
-            <p className="text-sm text-[var(--accent)] mb-6">
+            <p className="auth-feedback auth-feedback-success mb-6" role="status" aria-live="polite">
               {message}
             </p>
           )}
@@ -304,11 +302,12 @@ export default function ProfilePage() {
           <form onSubmit={handleSave} className="space-y-6">
 
             <div>
-              <label className="block text-xs tracking-wider text-[var(--muted)] mb-2">
+              <label htmlFor="profile-username" className="block text-xs tracking-wider text-[var(--muted)] mb-2">
                 USERNAME
               </label>
 
               <input
+                id="profile-username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={!editing}
@@ -318,11 +317,12 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-xs tracking-wider text-[var(--muted)] mb-2">
+              <label htmlFor="profile-full-name" className="block text-xs tracking-wider text-[var(--muted)] mb-2">
                 FULL NAME
               </label>
 
               <input
+                id="profile-full-name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 disabled={!editing}
@@ -333,11 +333,13 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-xs tracking-wider text-[var(--muted)] mb-2">
+              <label htmlFor="profile-email" className="block text-xs tracking-wider text-[var(--muted)] mb-2">
                 EMAIL ADDRESS
               </label>
 
               <input
+                id="profile-email"
+                type="email"
                 value={email}
                 disabled
                 className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm text-[var(--muted)] opacity-70"
@@ -349,11 +351,12 @@ export default function ProfilePage() {
             </div>
 
             <div>
-              <label className="block text-xs tracking-wider text-[var(--muted)] mb-2">
+              <label htmlFor="profile-bio" className="block text-xs tracking-wider text-[var(--muted)] mb-2">
                 BIO
               </label>
 
               <textarea
+                id="profile-bio"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 disabled={!editing}
@@ -376,7 +379,7 @@ export default function ProfilePage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center gap-2 bg-[var(--accent)] text-black px-6 py-3 text-xs font-bold tracking-wider hover:opacity-85 transition-opacity disabled:opacity-50"
+                  className="profile-button profile-button-primary inline-flex items-center gap-2 disabled:opacity-50"
                 >
                   <Save size={15} />
                   {saving ? 'SAVING...' : 'SAVE CHANGES'}
@@ -392,7 +395,7 @@ export default function ProfilePage() {
                     setError('')
                     setMessage('')
                   }}
-                  className="border border-[var(--border)] px-6 py-3 text-xs font-semibold tracking-wider hover:border-[var(--accent)] transition-colors"
+                  className="profile-button"
                 >
                   CANCEL
                 </button>
@@ -400,7 +403,7 @@ export default function ProfilePage() {
               </div>
             )}
           </form>
-        </div>
+        </section>
 
         <div className="border-t border-[var(--border)] mt-12 pt-8">
           <p className="text-xs tracking-[0.2em] text-[var(--muted)] mb-4">
