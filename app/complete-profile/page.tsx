@@ -110,27 +110,30 @@ export default function CompleteProfilePage() {
   }
 
   return (
-    <main className="min-h-[75vh] flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md">
-        <p className="text-xs tracking-[0.2em] text-[var(--accent)] mb-4">
-          ONE LAST THING
+    <main className="auth-page">
+      <div className="auth-layout">
+        <aside className="auth-aside" aria-label="About Ratism">
+          <p className="auth-index">RATISM / 03</p>
+          <h2>Find your name in the <em>burrow.</em></h2>
+          <p className="auth-aside-copy">A username is the last little detail before your Ratism profile is ready.</p>
+          <p className="auth-aside-note">ONE LAST THING</p>
+        </aside>
+        <section className="auth-panel">
+        <p className="auth-eyebrow">PROFILE SETUP</p>
+        <h1 className="auth-panel-title">CLAIM YOUR CORNER.</h1>
+
+        <p className="auth-panel-copy">
+          Choose a username to finish setting up your Ratism profile and make this corner yours.
         </p>
 
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">
-          CLAIM YOUR NAME.
-        </h1>
-
-        <p className="text-sm text-[var(--muted)] mb-10">
-          Choose a username to establish your identity in the Ratism community.
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="auth-field">
+            <label htmlFor="profile-username" className="block text-xs mb-2 text-[var(--muted)]">
               USERNAME
             </label>
 
             <input
+              id="profile-username"
               required
               minLength={3}
               maxLength={20}
@@ -138,16 +141,16 @@ export default function CompleteProfilePage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="your_username"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
+              className="auth-input"
             />
 
             <p className="text-xs text-[var(--muted)] mt-2">
-              3–20 characters. Letters, numbers and underscores only.
+              Choose 3–20 characters using letters, numbers or underscores.
             </p>
           </div>
 
           {error && (
-            <p className="text-sm text-red-500" role="alert">
+            <p className="auth-feedback" role="alert" aria-live="polite">
               {error}
             </p>
           )}
@@ -155,11 +158,12 @@ export default function CompleteProfilePage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[var(--accent)] text-black font-semibold text-sm py-3 hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="auth-button"
           >
             {loading ? 'CREATING PROFILE...' : 'COMPLETE PROFILE'}
           </button>
         </form>
+        </section>
       </div>
     </main>
   )

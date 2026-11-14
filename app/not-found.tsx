@@ -3,14 +3,14 @@ import Link from 'next/link'
 
 export default function NotFound() {
   return (
-    <main className="min-h-[85vh] flex items-center justify-center px-6 py-20">
-      <div className="w-full max-w-2xl text-center">
+    <main className="not-found-page">
+      <div className="not-found-content text-center">
 
         <p className="text-xs tracking-[0.3em] text-[var(--accent)] mb-8">
           LOST IN THE BURROW
         </p>
 
-        <h1 className="text-[clamp(7rem,22vw,14rem)] leading-none font-black tracking-tighter">
+        <h1 className="not-found-number">
           404<span className="text-[var(--accent)]">.</span>
         </h1>
 

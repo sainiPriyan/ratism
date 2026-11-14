@@ -16,6 +16,8 @@ export default function SignupPage() {
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   async function handleSignup(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -106,17 +108,17 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <main className="min-h-[75vh] flex items-center justify-center px-6 py-16">
-        <div className="w-full max-w-md text-center">
-          <p className="text-sm tracking-widest text-[var(--accent)] mb-4">
+      <main className="auth-page">
+        <section className="auth-panel mx-auto text-center" aria-live="polite">
+          <p className="auth-eyebrow mb-4">
             ALMOST THERE
           </p>
 
-          <h1 className="text-4xl font-black mb-5">
+          <h1 className="auth-panel-title">
             CHECK YOUR EMAIL.
           </h1>
 
-          <p className="text-[var(--muted)] leading-relaxed mb-8">
+          <p className="auth-panel-copy mb-8">
             We've sent a verification link to{' '}
             <strong>{email}</strong>. Click the link to activate
             your Ratism account.
@@ -124,37 +126,40 @@ export default function SignupPage() {
 
           <Link
             href="/login"
-            className="text-sm text-[var(--accent)] hover:underline"
+            className="auth-text-link"
           >
             Back to login
           </Link>
-        </div>
+        </section>
       </main>
     )
   }
 
   return (
-    <main className="min-h-[75vh] flex items-center justify-center px-6 py-16">
-      <div className="w-full max-w-md">
-        <p className="text-xs tracking-[0.2em] text-[var(--accent)] mb-4">
-          JOIN THE BURROW
+    <main className="auth-page">
+      <div className="auth-layout">
+        <aside className="auth-aside" aria-label="About Ratism">
+          <p className="auth-index">RATISM / 01</p>
+          <h2>Make room for <em>curiosity.</em></h2>
+          <p className="auth-aside-copy">A small corner of the internet for thoughtful ideas and the people who follow them.</p>
+          <p className="auth-aside-note">A LITTLE SPACE TO THINK</p>
+        </aside>
+        <section className="auth-panel">
+        <p className="auth-eyebrow">ACCOUNT / 01</p>
+        <h1 className="auth-panel-title">JOIN THE BURROW.</h1>
+
+        <p className="auth-panel-copy">
+          Make a little corner for yourself. Bring your curiosity.
         </p>
 
-        <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-3">
-          CREATE ACCOUNT.
-        </h1>
-
-        <p className="text-sm text-[var(--muted)] mb-10">
-          A username, an email, and a questionable amount of curiosity.
-        </p>
-
-        <form onSubmit={handleSignup} className="space-y-5">
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+        <form onSubmit={handleSignup} className="auth-form auth-signup-form">
+          <div className="auth-field">
+            <label htmlFor="signup-username" className="block text-xs mb-2 text-[var(--muted)]">
               USERNAME
             </label>
 
             <input
+              id="signup-username"
               required
               minLength={3}
               maxLength={20}
@@ -162,61 +167,76 @@ export default function SignupPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="your_username"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
+              className="auth-input"
             />
           </div>
 
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+          <div className="auth-field">
+            <label htmlFor="signup-email" className="block text-xs mb-2 text-[var(--muted)]">
               EMAIL ADDRESS
             </label>
 
             <input
+              id="signup-email"
               required
               type="email"
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
+              className="auth-input"
             />
           </div>
 
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+          <div className="auth-field">
+            <label htmlFor="signup-password" className="block text-xs mb-2 text-[var(--muted)]">
               PASSWORD
             </label>
 
-            <input
-              required
-              type="password"
-              minLength={8}
-              autoComplete="new-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="At least 8 characters"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
-            />
+            <div className="auth-password-wrap">
+              <input
+                id="signup-password"
+                required
+                type={showPassword ? 'text' : 'password'}
+                minLength={8}
+                autoComplete="new-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="At least 8 characters"
+                aria-label="Password"
+                className="auth-input"
+              />
+              <button type="button" className="auth-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
+                {showPassword ? 'HIDE' : 'SHOW'}
+              </button>
+            </div>
           </div>
 
-          <div>
-            <label className="block text-xs mb-2 text-[var(--muted)]">
+          <div className="auth-field">
+            <label htmlFor="signup-confirm-password" className="block text-xs mb-2 text-[var(--muted)]">
               CONFIRM PASSWORD
             </label>
 
-            <input
-              required
-              type="password"
-              autoComplete="new-password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Enter your password again"
-              className="w-full bg-transparent border border-[var(--border)] px-4 py-3 text-sm outline-none focus:border-[var(--accent)]"
-            />
+            <div className="auth-password-wrap">
+              <input
+                id="signup-confirm-password"
+                required
+                type={showConfirmPassword ? 'text' : 'password'}
+                autoComplete="new-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Enter your password again"
+                aria-label="Confirm password"
+                className="auth-input"
+              />
+              <button type="button" className="auth-password-toggle" onClick={() => setShowConfirmPassword((visible) => !visible)} aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'} aria-pressed={showConfirmPassword}>
+                {showConfirmPassword ? 'HIDE' : 'SHOW'}
+              </button>
+            </div>
           </div>
 
           {error && (
-            <p className="text-sm text-red-500" role="alert">
+            <p className="auth-feedback" role="alert" aria-live="polite">
               {error}
             </p>
           )}
@@ -224,29 +244,19 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={loading || googleLoading}
-            className="w-full bg-[var(--accent)] text-black font-semibold text-sm py-3 hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="auth-button"
           >
             {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
           </button>
         </form>
 
-        <div className="relative my-7">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[var(--border)]" />
-          </div>
-
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-[var(--background)] px-3 text-[var(--muted)]">
-              OR
-            </span>
-          </div>
-        </div>
+        <div className="auth-divider" aria-hidden="true">OR</div>
 
         <button
           type="button"
           onClick={handleGoogleSignup}
           disabled={loading || googleLoading}
-          className="w-full border border-[var(--border)] py-3 text-sm font-semibold hover:border-[var(--accent)] transition-colors disabled:opacity-50 flex items-center justify-center gap-3"
+          className="auth-button auth-button-secondary"
         >
           {googleLoading ? (
             'CONNECTING TO GOOGLE...'
@@ -280,15 +290,16 @@ export default function SignupPage() {
           )}
         </button>
 
-        <p className="text-sm text-[var(--muted)] mt-8">
+        <p className="auth-footnote">
           Already have an account?{' '}
           <Link
             href="/login"
-            className="text-[var(--accent)] hover:underline"
+            className="auth-text-link"
           >
             Log in
           </Link>
         </p>
+        </section>
       </div>
     </main>
   )
