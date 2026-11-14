@@ -16,14 +16,14 @@ function LoginForm() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [nudgeVisible, setNudgeVisible] = useState(false)
-  const [nudgeDismissed, setNudgeDismissed] = useState(false)
+  const [nudgePulse, setNudgePulse] = useState(false)
 
   function revealGoogleNudge() {
-    if (!nudgeDismissed) setNudgeVisible(true)
+    setNudgeVisible(true)
+    setNudgePulse((pulse) => !pulse)
   }
 
-  function dismissGoogleNudge() {
-    setNudgeDismissed(true)
+  function hideGoogleNudge() {
     setNudgeVisible(false)
   }
 
@@ -33,7 +33,7 @@ function LoginForm() {
   }
 
   async function handleGoogleLogin() {
-  dismissGoogleNudge()
+  hideGoogleNudge()
   setError('')
   setLoading(true)
 
@@ -126,7 +126,6 @@ function LoginForm() {
 
           <button
             type="submit"
-            onClick={revealGoogleNudge}
             disabled={loading}
             className="auth-button"
           >
@@ -139,6 +138,10 @@ function LoginForm() {
           <Link
             href="/forgot-password"
             className="auth-text-link"
+            onClick={(event) => {
+              event.preventDefault()
+              revealGoogleNudge()
+            }}
           >
             Forgot password?
           </Link>
@@ -153,7 +156,7 @@ function LoginForm() {
 
         <div className="auth-divider" aria-hidden="true">OR</div>
 
-        {nudgeVisible && <GoogleAuthNudge onDismiss={dismissGoogleNudge} />}
+        {nudgeVisible && <GoogleAuthNudge pulse={nudgePulse} />}
 
     <button
     type="button"

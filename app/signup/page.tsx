@@ -14,14 +14,14 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [nudgeVisible, setNudgeVisible] = useState(false)
-  const [nudgeDismissed, setNudgeDismissed] = useState(false)
+  const [nudgePulse, setNudgePulse] = useState(false)
 
   function revealGoogleNudge() {
-    if (!nudgeDismissed) setNudgeVisible(true)
+    setNudgeVisible(true)
+    setNudgePulse((pulse) => !pulse)
   }
 
-  function dismissGoogleNudge() {
-    setNudgeDismissed(true)
+  function hideGoogleNudge() {
     setNudgeVisible(false)
   }
 
@@ -31,7 +31,7 @@ export default function SignupPage() {
   }
 
   async function handleGoogleSignup() {
-    dismissGoogleNudge()
+    hideGoogleNudge()
     setError('')
     setGoogleLoading(true)
 
@@ -166,7 +166,6 @@ export default function SignupPage() {
 
           <button
             type="submit"
-            onClick={revealGoogleNudge}
             disabled={googleLoading}
             className="auth-button"
           >
@@ -176,7 +175,7 @@ export default function SignupPage() {
 
         <div className="auth-divider" aria-hidden="true">OR</div>
 
-        {nudgeVisible && <GoogleAuthNudge dismissible={false} />}
+        {nudgeVisible && <GoogleAuthNudge pulse={nudgePulse} />}
 
         <button
           type="button"
