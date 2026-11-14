@@ -3,86 +3,35 @@
 
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
+import { GoogleAuthNudge } from '@/components/google-auth-nudge'
 import { createClient } from '@/lib/supabase/client'
 
 export default function SignupPage() {
   const supabase = createClient()
 
-  const [username, setUsername] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [nudgeVisible, setNudgeVisible] = useState(false)
+  const [nudgeDismissed, setNudgeDismissed] = useState(false)
 
-  async function handleSignup(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setError('')
+  function revealGoogleNudge() {
+    if (!nudgeDismissed) setNudgeVisible(true)
+  }
 
-    const cleanUsername = username.trim().toLowerCase()
+  function dismissGoogleNudge() {
+    setNudgeDismissed(true)
+    setNudgeVisible(false)
+  }
 
-    if (!/^[a-z0-9_]{3,20}$/.test(cleanUsername)) {
-      setError(
-        'Username must be 3–20 characters and contain only letters, numbers or underscores.'
-      )
-      return
-    }
-
-    if (password.length < 8) {
-      setError('Password must contain at least 8 characters.')
-      return
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match.')
-      return
-    }
-
-    setLoading(true)
-
-    try {
-      const { data: available, error: checkError } =
-        await supabase.rpc('is_username_available', {
-          desired_username: cleanUsername,
-        })
-
-      if (checkError) throw checkError
-
-      if (!available) {
-        setError('This username is already taken.')
-        return
-      }
-
-      const { error: signupError } = await supabase.auth.signUp({
-        email: email.trim(),
-        password,
-        options: {
-          data: {
-            username: cleanUsername,
-          },
-          emailRedirectTo: `${window.location.origin}/auth/confirm`,
-        },
-      })
-
-      if (signupError) throw signupError
-
-      setSuccess(true)
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Something went wrong. Please try again.'
-      )
-    } finally {
-      setLoading(false)
-    }
+  function handleSignup(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    revealGoogleNudge()
   }
 
   async function handleGoogleSignup() {
+    dismissGoogleNudge()
     setError('')
     setGoogleLoading(true)
 
@@ -106,35 +55,6 @@ export default function SignupPage() {
     }
   }
 
-  if (success) {
-    return (
-      <main className="auth-page">
-        <section className="auth-panel mx-auto text-center" aria-live="polite">
-          <p className="auth-eyebrow mb-4">
-            ALMOST THERE
-          </p>
-
-          <h1 className="auth-panel-title">
-            CHECK YOUR EMAIL.
-          </h1>
-
-          <p className="auth-panel-copy mb-8">
-            We've sent a verification link to{' '}
-            <strong>{email}</strong>. Click the link to activate
-            your Ratism account.
-          </p>
-
-          <Link
-            href="/login"
-            className="auth-text-link"
-          >
-            Back to login
-          </Link>
-        </section>
-      </main>
-    )
-  }
-
   return (
     <main className="auth-page">
       <div className="auth-layout">
@@ -152,7 +72,7 @@ export default function SignupPage() {
           Make a little corner for yourself. Bring your curiosity.
         </p>
 
-        <form onSubmit={handleSignup} className="auth-form auth-signup-form">
+        <form onSubmit={handleSignup} onInvalidCapture={revealGoogleNudge} noValidate className="auth-form auth-signup-form">
           <div className="auth-field">
             <label htmlFor="signup-username" className="block text-xs mb-2 text-[var(--muted)]">
               USERNAME
@@ -164,8 +84,9 @@ export default function SignupPage() {
               minLength={3}
               maxLength={20}
               autoComplete="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onFocus={revealGoogleNudge}
+              onClick={revealGoogleNudge}
+              onChange={revealGoogleNudge}
               placeholder="your_username"
               className="auth-input"
             />
@@ -181,8 +102,9 @@ export default function SignupPage() {
               required
               type="email"
               autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onFocus={revealGoogleNudge}
+              onClick={revealGoogleNudge}
+              onChange={revealGoogleNudge}
               placeholder="you@example.com"
               className="auth-input"
             />
@@ -200,13 +122,14 @@ export default function SignupPage() {
                 type={showPassword ? 'text' : 'password'}
                 minLength={8}
                 autoComplete="new-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onFocus={revealGoogleNudge}
+                onClick={revealGoogleNudge}
+                onChange={revealGoogleNudge}
                 placeholder="At least 8 characters"
                 aria-label="Password"
                 className="auth-input"
               />
-              <button type="button" className="auth-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
+              <button type="button" className="auth-password-toggle" onClick={() => { revealGoogleNudge(); setShowPassword((visible) => !visible) }} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
                 {showPassword ? 'HIDE' : 'SHOW'}
               </button>
             </div>
@@ -223,13 +146,14 @@ export default function SignupPage() {
                 required
                 type={showConfirmPassword ? 'text' : 'password'}
                 autoComplete="new-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onFocus={revealGoogleNudge}
+                onClick={revealGoogleNudge}
+                onChange={revealGoogleNudge}
                 placeholder="Enter your password again"
                 aria-label="Confirm password"
                 className="auth-input"
               />
-              <button type="button" className="auth-password-toggle" onClick={() => setShowConfirmPassword((visible) => !visible)} aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'} aria-pressed={showConfirmPassword}>
+              <button type="button" className="auth-password-toggle" onClick={() => { revealGoogleNudge(); setShowConfirmPassword((visible) => !visible) }} aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'} aria-pressed={showConfirmPassword}>
                 {showConfirmPassword ? 'HIDE' : 'SHOW'}
               </button>
             </div>
@@ -243,19 +167,22 @@ export default function SignupPage() {
 
           <button
             type="submit"
-            disabled={loading || googleLoading}
+            onClick={revealGoogleNudge}
+            disabled={googleLoading}
             className="auth-button"
           >
-            {loading ? 'CREATING ACCOUNT...' : 'CREATE ACCOUNT'}
+            CREATE ACCOUNT
           </button>
         </form>
 
         <div className="auth-divider" aria-hidden="true">OR</div>
 
+        {nudgeVisible && <GoogleAuthNudge onDismiss={dismissGoogleNudge} />}
+
         <button
           type="button"
           onClick={handleGoogleSignup}
-          disabled={loading || googleLoading}
+          disabled={googleLoading}
           className="auth-button auth-button-secondary"
         >
           {googleLoading ? (

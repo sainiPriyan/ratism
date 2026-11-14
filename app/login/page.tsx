@@ -3,49 +3,37 @@
 
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import { GoogleAuthNudge } from '@/components/google-auth-nudge'
 import { createClient } from '@/lib/supabase/client'
 
 function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClient()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [nudgeVisible, setNudgeVisible] = useState(false)
+  const [nudgeDismissed, setNudgeDismissed] = useState(false)
 
-  async function handleLogin(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+  function revealGoogleNudge() {
+    if (!nudgeDismissed) setNudgeVisible(true)
+  }
 
-    try {
-      const { error: loginError } =
-        await supabase.auth.signInWithPassword({
-          email: email.trim(),
-          password,
-        })
+  function dismissGoogleNudge() {
+    setNudgeDismissed(true)
+    setNudgeVisible(false)
+  }
 
-      if (loginError) throw loginError
-
-      router.replace('/')
-      router.refresh()
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Unable to log in. Please try again.'
-      )
-    } finally {
-      setLoading(false)
-    }
+  function handleLogin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    revealGoogleNudge()
   }
 
   async function handleGoogleLogin() {
+  dismissGoogleNudge()
   setError('')
   setLoading(true)
 
@@ -88,11 +76,12 @@ function LoginForm() {
 
         {searchParams.get('error') === 'verification_failed' && (
             <p className="auth-feedback mb-5" role="alert" aria-live="polite">
-            Your verification link is invalid or expired. Please try signing up again or request a new confirmation email.
+            That verification link is invalid or expired. Sign in with Google to continue.
           </p>
         )}
 
-        <form onSubmit={handleLogin} className="auth-form">
+          <form onSubmit={handleLogin} onInvalidCapture={revealGoogleNudge} noValidate className="auth-form">
+
           <div className="auth-field">
             <label htmlFor="login-email" className="block text-xs mb-2 text-[var(--muted)]">
               EMAIL ADDRESS
@@ -102,8 +91,9 @@ function LoginForm() {
               required
               type="email"
               autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onFocus={revealGoogleNudge}
+              onClick={revealGoogleNudge}
+              onChange={revealGoogleNudge}
               placeholder="you@example.com"
                 className="auth-input"
             />
@@ -119,13 +109,14 @@ function LoginForm() {
                 required
                 type={showPassword ? 'text' : 'password'}
                 autoComplete="current-password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onFocus={revealGoogleNudge}
+                onClick={revealGoogleNudge}
+                onChange={revealGoogleNudge}
                 placeholder="Your password"
                 aria-label="Password"
               className="auth-input"
               />
-              <button type="button" className="auth-password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
+              <button type="button" className="auth-password-toggle" onClick={() => { revealGoogleNudge(); setShowPassword((visible) => !visible) }} aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
                 {showPassword ? 'HIDE' : 'SHOW'}
               </button>
             </div>
@@ -139,6 +130,7 @@ function LoginForm() {
 
           <button
             type="submit"
+            onClick={revealGoogleNudge}
             disabled={loading}
             className="auth-button"
           >
@@ -164,6 +156,8 @@ function LoginForm() {
         </div>
 
         <div className="auth-divider" aria-hidden="true">OR</div>
+
+        {nudgeVisible && <GoogleAuthNudge onDismiss={dismissGoogleNudge} />}
 
     <button
     type="button"
