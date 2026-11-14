@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import type { ReactNode } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { PageFrame, SectionLabel } from '@/components/site'
 
@@ -10,7 +11,7 @@ export function PlaceholderPage({
   links,
 }: {
   label: string
-  title: string
+  title: ReactNode
   intro: string
   symbol: string
   links?: { label: string; href: string }[]
