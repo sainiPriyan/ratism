@@ -70,10 +70,6 @@ function LoginForm() {
         <p className="auth-eyebrow">ACCOUNT / 02</p>
         <h1 className="auth-panel-title">WELCOME BACK.</h1>
 
-        <p className="auth-panel-copy">
-          Your corner of the burrow is right where you left it.
-        </p>
-
         {searchParams.get('error') === 'verification_failed' && (
             <p className="auth-feedback mb-5" role="alert" aria-live="polite">
             That verification link is invalid or expired. Sign in with Google to continue.
