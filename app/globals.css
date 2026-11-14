@@ -765,32 +765,20 @@ a {
   transform: rotate(-1deg);
 }
 
-.auth-google-nudge-dismiss {
-  flex: 0 0 auto;
-  margin-left: auto;
-  padding: 0.15rem 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  font: 0.6rem/1.2 "Courier New", monospace;
-  letter-spacing: 0.08em;
+.auth-google-nudge--pulse-a {
+  animation: auth-nudge-enter 220ms ease-out both, auth-nudge-attention-a 500ms ease-out;
 }
 
-.auth-google-nudge-dismiss:hover {
-  color: var(--lime);
-}
-
-.auth-google-nudge-dismiss:focus-visible {
-  outline: 2px solid var(--lime);
-  outline-offset: 3px;
+.auth-google-nudge--pulse-b {
+  animation: auth-nudge-enter 220ms ease-out both, auth-nudge-attention-b 500ms ease-out;
 }
 
 .auth-google-nudge-arrow {
   position: absolute;
-  right: 2.25rem;
+  right: 50%;
   bottom: -0.1rem;
   width: 160px;
+  transform: translateX(50%);
   height: 58px;
   overflow: visible;
   pointer-events: none;
@@ -838,6 +826,28 @@ a {
   }
 }
 
+@keyframes auth-nudge-attention-a {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(176, 214, 110, 0);
+  }
+
+  40% {
+    box-shadow: 0 0 0 3px rgba(176, 214, 110, 0.24), 0 0 20px rgba(176, 214, 110, 0.16);
+  }
+}
+
+@keyframes auth-nudge-attention-b {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(176, 214, 110, 0);
+  }
+
+  40% {
+    box-shadow: 0 0 0 3px rgba(176, 214, 110, 0.24), 0 0 20px rgba(176, 214, 110, 0.16);
+  }
+}
+
 @keyframes auth-nudge-arrow-draw {
   to {
     stroke-dashoffset: 0;
@@ -858,14 +868,17 @@ a {
   }
 
   .auth-google-nudge-arrow {
-    right: 7%;
+    right: 50%;
     width: 132px;
     height: 50px;
+    transform: translateX(50%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .auth-google-nudge,
+  .auth-google-nudge--pulse-a,
+  .auth-google-nudge--pulse-b,
   .auth-google-nudge-stroke,
   .auth-google-nudge-head {
     animation: none;
@@ -896,9 +909,10 @@ a {
   }
 
   .auth-page:has(.auth-google-nudge) .auth-google-nudge-arrow {
-    right: 2rem;
+    right: 50%;
     bottom: 0;
     height: 44px;
+    transform: translateX(50%);
   }
 
   .auth-page:has(.auth-google-nudge) .auth-footnote,
