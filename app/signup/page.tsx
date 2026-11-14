@@ -61,7 +61,6 @@ export default function SignupPage() {
         <aside className="auth-aside" aria-label="About Ratism">
           <p className="auth-index">RATISM / 01</p>
           <h2>Make room for <em>curiosity.</em></h2>
-          <p className="auth-aside-copy">A small corner of the internet for thoughtful ideas and the people who follow them.</p>
           <p className="auth-aside-note">A LITTLE SPACE TO THINK</p>
         </aside>
         <section className="auth-panel">
@@ -177,7 +176,7 @@ export default function SignupPage() {
 
         <div className="auth-divider" aria-hidden="true">OR</div>
 
-        {nudgeVisible && <GoogleAuthNudge onDismiss={dismissGoogleNudge} />}
+        {nudgeVisible && <GoogleAuthNudge dismissible={false} />}
 
         <button
           type="button"

@@ -16,14 +16,9 @@ export default function NotFound() {
 
         <div className="w-16 h-px bg-[var(--accent)] mx-auto my-8" />
 
-        <h2 className="text-xl md:text-2xl font-bold mb-4">
+        <h2 className="text-xl md:text-2xl font-bold mb-4 leading-[3]">
           WELL, THIS IS AWKWARD.
         </h2>
-
-        <p className="text-sm md:text-base text-[var(--muted)] leading-relaxed max-w-md mx-auto mb-10">
-          The page you're looking for seems to have wandered off.
-          Even rats lose their way sometimes.
-        </p>
 
         <Link
           href="/"
@@ -32,10 +27,6 @@ export default function NotFound() {
           <span>BACK TO THE BURROW</span>
           <span aria-hidden="true">↗</span>
         </Link>
-
-        <p className="text-[10px] tracking-[0.2em] text-[var(--muted)] mt-16 opacity-60">
-          RATISM — NOTHING EXISTS WITHOUT PURPOSE.
-        </p>
 
       </div>
     </main>

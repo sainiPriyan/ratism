@@ -1,24 +1,30 @@
 import '@fontsource/caveat/500.css'
 
 type GoogleAuthNudgeProps = {
-  onDismiss: () => void
+  dismissible?: boolean
+  onDismiss?: () => void
 }
 
-export function GoogleAuthNudge({ onDismiss }: GoogleAuthNudgeProps) {
+export function GoogleAuthNudge({
+  dismissible = true,
+  onDismiss,
+}: GoogleAuthNudgeProps) {
   return (
     <div className="auth-google-nudge" role="status" aria-live="polite">
       <div className="auth-google-nudge-copy">
         <p className="auth-google-nudge-message">
           bro just continue auth using Google 💀
         </p>
-        <button
-          type="button"
-          className="auth-google-nudge-dismiss"
-          onClick={onDismiss}
-          aria-label="Dismiss Google sign-in tip"
-        >
-          DISMISS
-        </button>
+        {dismissible && onDismiss && (
+          <button
+            type="button"
+            className="auth-google-nudge-dismiss"
+            onClick={onDismiss}
+            aria-label="Dismiss Google sign-in tip"
+          >
+            DISMISS
+          </button>
+        )}
       </div>
       <svg
         className="auth-google-nudge-arrow"
