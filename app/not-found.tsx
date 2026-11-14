@@ -27,7 +27,7 @@ export default function NotFound() {
 
         <Link
           href="/"
-          className="inline-flex items-center gap-3 bg-[var(--accent)] text-black px-7 py-3 text-xs font-bold tracking-widest hover:opacity-85 transition-opacity"
+          className="inline-flex items-center gap-0 bg-[var(--accent)] text-black px-7 py-3 text-xs font-bold tracking-widest hover:opacity-85 transition-opacity"
         >
           <span>BACK TO THE BURROW</span>
           <span aria-hidden="true">↗</span>
